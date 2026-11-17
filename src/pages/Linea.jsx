@@ -1,10 +1,11 @@
 import Pagina from '../components/Pagina'
 import PageHero from '../components/PageHero'
-import ProductCard from '../components/ProductCard'
+import GrillaDescubrir from '../components/GrillaDescubrir'
 import Cierre from '../components/Cierre'
 import { Lineas, Flecha } from '../components/Graficos'
 import { Enlace } from '../lib/transicion'
-import { productosHumano, productosIndustrial, certificaciones, plantas, empresa } from '../data'
+import { certificaciones, plantas, empresa } from '../data'
+import { catalogoHumano, catalogoIndustrial } from './catalogoData'
 import './pages.css'
 import './productos.css'
 
@@ -23,11 +24,7 @@ function Humano() {
 
       <section className="bloque bloque--sal">
         <div className="wrap">
-          <div className="grid-3">
-            {productosHumano.map((p, i) => (
-              <ProductCard key={p.slug} producto={p} tono={i === 0 ? 'cielo' : 'blanco'} palabra={i === 0 ? 'Marina' : undefined} cta="Ver producto" href={`/productos/${p.slug}`} />
-            ))}
-          </div>
+          <GrillaDescubrir productos={catalogoHumano} />
         </div>
       </section>
 
@@ -86,30 +83,17 @@ function Industrial() {
         acciones={<a href={`https://wa.me/${empresa.whatsapp}`} target="_blank" rel="noopener" className="btn">Contactar con ventas <Flecha /></a>}
       />
 
-      <section className="bloque bloque--profundo">
+      <section className="bloque bloque--sal">
         <div className="wrap">
           <div className="cabeza-2">
             <Lineas className="display h2" lines={['8 referencias', 'industriales']} />
             <p className="lead" data-reveal>Solicita la ficha técnica de cada referencia al equipo comercial.</p>
           </div>
-          <div className="grid-4">
-            {productosIndustrial.map((p) => (
-              <ProductCard
-                key={p.slug}
-                className="pcard--compacta"
-                producto={{ ...p, linea: 'Sal Marina de la Guajira' }}
-                variante="industrial"
-                tono="marino"
-                etiqueta="Industrial"
-                cta="Ver referencia"
-                href={`/productos/${p.slug}`}
-              />
-            ))}
-          </div>
+          <GrillaDescubrir productos={catalogoIndustrial} />
         </div>
       </section>
 
-      <section className="bloque bloque--sal">
+      <section className="bloque bloque--blanco">
         <div className="wrap grid-2">
           <div>
             <p className="cifra-xl" data-reveal>{empresa.instalaciones}</p>
@@ -130,7 +114,7 @@ function Industrial() {
         </div>
       </section>
 
-      <section className="bloque bloque--blanco"><div className="wrap"><Cierre texto="¿Necesitas sal para tu proceso productivo?" /></div></section>
+      <section className="bloque bloque--sal"><div className="wrap"><Cierre texto="¿Necesitas sal para tu proceso productivo?" /></div></section>
     </Pagina>
   )
 }

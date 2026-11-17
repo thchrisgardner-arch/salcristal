@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Pagina from '../components/Pagina'
 import PageHero from '../components/PageHero'
-import TarjetaDescubrir from '../components/TarjetaDescubrir'
+import GrillaDescubrir from '../components/GrillaDescubrir'
 import Cierre from '../components/Cierre'
 import { Lineas } from '../components/Graficos'
 import { catalogoHumano, catalogoIndustrial } from './catalogoData'
@@ -14,32 +14,10 @@ const FILTROS = [
   { id: 'industrial', label: 'Consumo industrial' },
 ]
 
-function Grilla({ productos, activo, setActivo }) {
-  return (
-    <ul className="catalogo__grilla">
-      {productos.map((p) => (
-        <li key={p.id} data-reveal>
-          <TarjetaDescubrir producto={p} activo={activo === p.id} onActivar={setActivo} />
-        </li>
-      ))}
-    </ul>
-  )
-}
-
 export default function Catalogo() {
   const [filtro, setFiltro] = useState('todos')
-  // Tarjeta activada por toque (solo dispositivos táctiles); una a la vez
-  const [activo, setActivo] = useState(null)
   const verHumano = filtro !== 'industrial'
   const verIndustrial = filtro !== 'humano'
-
-  // Tocar fuera de una tarjeta la desactiva
-  useEffect(() => {
-    if (!activo) return
-    const fuera = (e) => !e.target.closest('.td') && setActivo(null)
-    document.addEventListener('pointerdown', fuera)
-    return () => document.removeEventListener('pointerdown', fuera)
-  }, [activo])
 
   return (
     <Pagina titulo="Productos" descripcion="Catálogo de Sal Cristal: sal marina para consumo humano e industrial desde Uribia, La Guajira.">
@@ -69,7 +47,7 @@ export default function Catalogo() {
                 <Lineas className="display h2" lines={['Consumo', 'humano']} />
                 <p className="lead" data-reveal>Sal marina refinada, yodada y fluorizada para consumo humano.</p>
               </div>
-              <Grilla productos={catalogoHumano} activo={activo} setActivo={setActivo} />
+              <GrillaDescubrir productos={catalogoHumano} />
             </div>
           )}
 
@@ -79,7 +57,7 @@ export default function Catalogo() {
                 <Lineas className="display h2" lines={['Consumo', 'industrial']} />
                 <p className="lead" data-reveal>Sal Marina de la Guajira para usos industriales. Pureza de origen natural.</p>
               </div>
-              <Grilla productos={catalogoIndustrial} activo={activo} setActivo={setActivo} />
+              <GrillaDescubrir productos={catalogoIndustrial} />
             </div>
           )}
 
