@@ -1,0 +1,149 @@
+/* ---------- Showcase interactivo de productos ---------- */
+.sc {
+  --fondo: #dce7f2;
+  --tipo: #002753;
+  --ui: #002753;
+  position: relative;
+  background: var(--sal);
+  padding: clamp(8px, 1vw, 14px);
+}
+
+/* Escenario casi a todo el ancho, con el color del producto activo */
+.sc__escena {
+  position: relative;
+  height: clamp(680px, 92svh, 860px);
+  border-radius: var(--radio);
+  background: var(--fondo);
+  color: var(--ui);
+  overflow: hidden;
+  isolation: isolate;
+}
+.sc__arte { position: absolute; inset: 0; }
+
+/* Nombre gigante */
+.sc__nombres { position: absolute; inset: 0 0 clamp(110px, 13vh, 150px); display: grid; place-items: center; }
+.sc__nombre {
+  grid-area: 1 / 1;
+  display: grid;
+  justify-items: center;
+  color: var(--tipo);
+  font-size: min(29vw, 48svh);
+  line-height: 0.84;
+  letter-spacing: 0.005em;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.sc__nombre--2 { font-size: min(19.5vw, 30svh); }
+.sc__linea { display: block; overflow: hidden; padding: 0.06em 0.04em 0; margin-top: -0.06em; }
+.sc__linea > span { display: block; will-change: transform; }
+
+/* Producto protagonista, superpuesto a la tipografía */
+.sc__producto {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: min(44vw, 620px);
+  aspect-ratio: 620 / 580;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.sc__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 34px 30px rgba(0, 20, 45, 0.28)) drop-shadow(0 6px 8px rgba(0, 20, 45, 0.12));
+  will-change: transform, opacity;
+}
+.sc__img--plana { filter: none; }
+.sc__producto:has(.sc__img--plana[aria-hidden="false"]) .sc__sombra { opacity: 0 !important; }
+.sc__sombra {
+  position: absolute;
+  left: 24%;
+  right: 24%;
+  bottom: 7%;
+  height: 8%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 20, 45, 0.3), rgba(0, 20, 45, 0));
+  filter: blur(6px);
+}
+
+/* Pie: información · selector · catálogo */
+.sc__pie {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 24px;
+  padding: 0 clamp(24px, 3.4vw, 56px) clamp(24px, 3vw, 40px);
+}
+
+.sc__infos { display: grid; }
+.sc__info { grid-area: 1 / 1; display: grid; gap: 12px; justify-items: start; align-content: end; max-width: 320px; }
+.sc__cat { padding: 5px 12px; border: 1px solid currentColor; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.sc__desc { font-size: 15px; line-height: 1.5; opacity: 0.85; }
+.sc__pres { display: flex; flex-wrap: wrap; gap: 6px; }
+.sc__pres li { padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, currentColor 12%, transparent); font-size: 13px; font-weight: 700; }
+.sc__nota { font-size: 13px; font-weight: 700; opacity: 0.8; }
+.sc__cta { display: inline-flex; align-items: center; gap: 12px; margin-top: 4px; padding-bottom: 4px; border-bottom: 1.5px solid currentColor; font-size: 14px; font-weight: 700; }
+.sc__cta .flecha { width: 16px; transition: transform 0.45s var(--ease); }
+.sc__cta:hover .flecha { transform: translateX(5px); }
+
+/* Selector */
+.sc__selector { justify-self: center; max-width: 100%; }
+.sc__tabs { position: relative; display: flex; gap: clamp(22px, 3vw, 48px); padding-bottom: 10px; }
+.sc__tab {
+  position: relative;
+  padding: 8px 2px;
+  font-size: clamp(20px, 1.9vw, 30px);
+  line-height: 1;
+  color: inherit;
+  opacity: 0.55;
+  white-space: nowrap;
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.sc__tab:hover { opacity: 0.9; transform: translateY(-2px); }
+.sc__tab.is-on { opacity: 1; }
+.sc__tab:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.sc__indicador { position: absolute; left: 0; bottom: 4px; width: 0; height: 3px; border-radius: 2px; background: currentColor; }
+
+.sc__ver { justify-self: end; display: inline-flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; }
+.sc__ver .flecha { width: 16px; transition: transform 0.45s var(--ease); }
+.sc__ver:hover .flecha { transform: translateX(5px); }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1080px) {
+  .sc__escena { height: clamp(700px, 86svh, 820px); }
+  .sc__nombres { bottom: 230px; }
+  .sc__producto { width: min(62vw, 520px); top: 38%; }
+  .sc__pie { grid-template-columns: 1fr auto; grid-template-areas: 'sel sel' 'info ver'; row-gap: 26px; }
+  .sc__selector { grid-area: sel; }
+  .sc__infos { grid-area: info; }
+  .sc__ver { grid-area: ver; }
+}
+
+/* ---------- Móvil: composición vertical propia ---------- */
+@media (max-width: 767px) {
+  .sc { padding: 8px; }
+  .sc__escena { height: auto; display: flex; flex-direction: column; }
+  .sc__arte { position: relative; inset: auto; aspect-ratio: 1 / 1.02; }
+  .sc__nombres { inset: 0; align-items: start; padding-top: 12%; }
+  .sc__nombre { font-size: 30vw; }
+  .sc__nombre--2 { font-size: 21vw; }
+  .sc__producto { width: 86%; top: 60%; }
+
+  .sc__pie { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 22px; padding: 0 20px 26px; }
+  /* El selector se desplaza en horizontal si no caben las opciones */
+  .sc__selector { order: -1; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 0 20px; scroll-snap-type: x proximity; }
+  .sc__selector::-webkit-scrollbar { display: none; }
+  .sc__tabs { gap: 26px; width: max-content; }
+  .sc__tab { font-size: 24px; padding: 12px 2px; scroll-snap-align: center; }
+  .sc__info { max-width: none; }
+  .sc__ver { align-self: flex-start; }
+}

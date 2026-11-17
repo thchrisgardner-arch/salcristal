@@ -1,0 +1,31 @@
+.comp { background: var(--cielo); color: var(--marino); padding: clamp(90px, 10vw, 160px) 0; }
+.comp__grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  grid-template-areas: 'foto texto' 'foto cifras' 'foto ods';
+  gap: 40px clamp(30px, 6vw, 100px);
+}
+.comp__foto { grid-area: foto; margin: 0; border-radius: var(--radio); overflow: hidden; aspect-ratio: 4 / 5; align-self: start; position: sticky; top: calc(var(--header-h) + 20px); }
+.comp__foto img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); }
+.comp__texto { grid-area: texto; display: grid; gap: 24px; }
+.comp__texto h2 .line-mask:nth-child(2) > span { font-style: italic; font-weight: 400; }
+.comp__etiqueta { justify-self: start; padding: 6px 14px; border: 1px solid; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+
+.comp__cifras { grid-area: cifras; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.comp__cifras li { display: grid; gap: 10px; align-content: space-between; min-height: 200px; padding: 24px; border-radius: var(--radio); background: var(--blanco); }
+.comp__cifras strong { font-size: clamp(50px, 5vw, 84px); line-height: 0.9; letter-spacing: 0; }
+.comp__cifras li > span { font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--texto-suave); }
+
+.comp__ods { grid-area: ods; }
+.comp__ods h3 { font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px; }
+.comp__ods ul { display: flex; flex-wrap: wrap; gap: 8px; }
+.comp__ods li { padding: 10px 16px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--linea); font-size: 14px; font-weight: 600; }
+
+@media (max-width: 1000px) {
+  .comp__grid { grid-template-columns: 1fr; grid-template-areas: 'texto' 'foto' 'cifras' 'ods'; }
+  .comp__foto { position: relative; top: 0; aspect-ratio: 4 / 3.6; }
+}
+@media (max-width: 767px) {
+  .comp__cifras { grid-template-columns: 1fr; }
+  .comp__cifras li { min-height: 0; grid-template-columns: auto 1fr; align-items: center; gap: 18px; }
+}

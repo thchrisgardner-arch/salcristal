@@ -1,0 +1,69 @@
+.filtros { display: inline-flex; flex-wrap: wrap; gap: 6px; padding: 6px; margin-bottom: clamp(50px, 6vw, 90px); border-radius: 999px; background: var(--blanco); box-shadow: inset 0 0 0 1px var(--linea); }
+.filtros button { padding: 11px 20px; border-radius: 999px; font-size: 14px; font-weight: 700; color: var(--marino); transition: background 0.4s var(--ease), color 0.4s; }
+.filtros button.is-on { background: var(--marino); color: var(--blanco); }
+.catalogo__grupo { margin-bottom: clamp(70px, 8vw, 130px); }
+
+/* Grilla del catálogo: 3 columnas → 2 en tablet → 1 o 2 en móvil */
+.catalogo__grilla { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 1.6vw, 24px); }
+.catalogo__grilla > li { min-width: 0; }
+@media (max-width: 1000px) { .catalogo__grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .catalogo__grilla { grid-template-columns: 1fr; } }
+@media (min-width: 420px) and (max-width: 560px) { .catalogo__grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+
+.pcard--compacta { min-height: 460px; padding: 24px 22px 22px; }
+.pcard--compacta .pcard__nombre { font-size: clamp(36px, 2.8vw, 48px); }
+.pcard--compacta .pcard__media { min-height: 200px; }
+.pcard--compacta .pcard__palabra { display: none; }
+
+/* Beneficios de la línea humana */
+.beneficios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.beneficio { display: grid; gap: 14px; align-content: start; padding: 30px; border-radius: var(--radio); background: var(--blanco); }
+.beneficio span { font-family: var(--f-display); font-size: 44px; line-height: 1; color: var(--marino-medio); }
+.beneficio h3 { font-size: clamp(30px, 2.4vw, 40px); }
+.beneficio p { font-size: 16px; color: var(--texto-suave); }
+
+/* Ficha de producto */
+.ficha { padding: calc(var(--header-h) + 40px) 0 clamp(80px, 9vw, 140px); background: var(--blanco); color: var(--marino); }
+.ficha__grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(30px, 5vw, 90px); align-items: start; }
+.ficha__media {
+  position: sticky;
+  top: calc(var(--header-h) + 20px);
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: var(--radio);
+  background: var(--cielo);
+  overflow: hidden;
+}
+.ficha__media--industrial { background: var(--marino); }
+.ficha__media img { position: relative; z-index: 1; width: 78%; filter: drop-shadow(0 40px 34px rgba(0, 26, 56, 0.22)); }
+.ficha__palabra { position: absolute; font-family: var(--f-display); text-transform: uppercase; font-size: clamp(120px, 16vw, 260px); line-height: 0.8; color: var(--marino); opacity: 0.08; white-space: nowrap; }
+.ficha__media--industrial .ficha__palabra { color: var(--blanco); opacity: 0.07; }
+.ficha__ilustracion { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; opacity: 0.35; mix-blend-mode: multiply; }
+
+.ficha__info { display: grid; gap: 26px; padding-top: 10px; }
+.ficha__info .ph__migas { margin-bottom: 0; }
+.ficha__linea { font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--marino-medio); }
+.ficha__nombre { font-size: clamp(64px, 8vw, 140px); line-height: 0.88; }
+.ficha__desc { font-size: 19px; line-height: 1.6; color: var(--texto-suave); max-width: 40ch; }
+.ficha__datos { border-top: 1px solid var(--linea); }
+.ficha__datos div { display: grid; grid-template-columns: 170px 1fr; gap: 12px; padding: 18px 0; border-bottom: 1px solid var(--linea); }
+.ficha__datos dt { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.6; padding-top: 3px; }
+.ficha__datos dd { margin: 0; font-weight: 600; }
+.ficha__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.ficha__chips li { padding: 8px 14px; border-radius: 999px; background: var(--cielo); font-size: 14px; font-weight: 700; }
+.ficha__acciones { display: flex; flex-wrap: wrap; gap: 12px; }
+.ficha__nota { font-size: 14px; color: var(--texto-suave); padding: 14px 16px; border-radius: 10px; background: var(--sal); }
+
+.relacionados { margin-top: clamp(70px, 8vw, 120px); }
+.relacionados h2 { font-size: clamp(40px, 4vw, 64px); margin-bottom: 30px; }
+
+@media (max-width: 900px) {
+  .ficha__grid { grid-template-columns: 1fr; }
+  .ficha__media { position: relative; top: 0; }
+  .beneficios { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .ficha__datos div { grid-template-columns: 1fr; gap: 6px; }
+  .ficha__acciones .btn { flex: 1 1 auto; justify-content: center; }
+}

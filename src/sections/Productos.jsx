@@ -1,0 +1,219 @@
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { gsap, reducedMotion } from '../lib/motion'
+import { Enlace } from '../lib/transicion'
+import { Flecha } from '../components/Graficos'
+import { showcase } from '../data'
+import './Productos.css'
+
+/**
+ * Showcase interactivo de productos (Home).
+ * Todos los productos se renderizan apilados (imágenes precargadas, sin saltos de layout)
+ * y GSAP coordina la transición: fondo → nombre gigante → empaque → indicador → información.
+ */
+export default function Productos() {
+  const [activo, setActivo] = useState(0)
+  const actual = useRef(0)
+  const animando = useRef(null)
+  const ref = useRef(null)
+  const tabsRef = useRef([])
+  const indicador = useRef(null)
+
+  // Mueve la línea inferior bajo el botón activo
+  const moverIndicador = useCallback((i, inmediato = false) => {
+    const b = tabsRef.current[i]
+    if (!b || !indicador.current) return
+    // En móvil el selector se desplaza para centrar la opción activa
+    const sel = b.closest('.sc__selector')
+    if (sel && sel.scrollWidth > sel.clientWidth && !inmediato) {
+      sel.scrollTo({ left: b.offsetLeft - sel.clientWidth / 2 + b.offsetWidth / 2, behavior: reducedMotion() ? 'auto' : 'smooth' })
+    }
+    const props = { x: b.offsetLeft, width: b.offsetWidth }
+    if (inmediato || reducedMotion()) gsap.set(indicador.current, props)
+    else gsap.to(indicador.current, { ...props, duration: 0.7, ease: 'expo.out' })
+  }, [])
+
+  // Estado inicial: solo el primer producto visible
+  useLayoutEffect(() => {
+    const p = showcase[0]
+    const el = ref.current
+    gsap.set(el, { '--fondo': p.fondo, '--tipo': p.tipo, '--ui': p.ui })
+    showcase.forEach((_, i) => {
+      if (i === 0) return
+      gsap.set(el.querySelectorAll(`[data-i="${i}"] .sc__linea > span`), { yPercent: 110 })
+      gsap.set(el.querySelectorAll(`.sc__img[data-i="${i}"], .sc__info[data-i="${i}"]`), { autoAlpha: 0 })
+    })
+    moverIndicador(0, true)
+
+    // Entrada de la sección al aparecer en pantalla
+    if (reducedMotion()) return
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 70%', once: true } })
+      tl.from('[data-i="0"] .sc__linea > span', { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.08 })
+        .from('.sc__img[data-i="0"]', { scale: 0.86, yPercent: 8, autoAlpha: 0, duration: 1.4, ease: 'expo.out' }, 0.15)
+        .from('.sc__sombra', { scaleX: 0.4, autoAlpha: 0, duration: 1.2, ease: 'expo.out' }, 0.3)
+        // fromTo + clearProps: los botones tienen transición CSS de opacidad y no se debe leer su valor a medio camino
+        .fromTo('.sc__tab', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power3.out', clearProps: 'opacity,visibility,transform' }, 0.45)
+        .fromTo('.sc__indicador', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 0.8)
+        .from('.sc__info[data-i="0"] > *, .sc__ver', { autoAlpha: 0, y: 16, duration: 0.8, stagger: 0.06, ease: 'power3.out' }, 0.55)
+    }, el)
+    return () => ctx.revert()
+  }, [moverIndicador])
+
+  useEffect(() => {
+    const onResize = () => moverIndicador(actual.current, true)
+    window.addEventListener('resize', onResize)
+    document.fonts?.ready.then(onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [moverIndicador])
+
+  const seleccionar = useCallback(
+    (i) => {
+      const de = actual.current
+      if (i === de) return
+      actual.current = i
+      setActivo(i)
+      const el = ref.current
+      const p = showcase[i]
+      moverIndicador(i)
+
+      const sale = (sel) => el.querySelectorAll(sel.replaceAll('$', de))
+      const entra = (sel) => el.querySelectorAll(sel.replaceAll('$', i))
+
+      if (reducedMotion()) {
+        gsap.set(el, { '--fondo': p.fondo, '--tipo': p.tipo, '--ui': p.ui })
+        gsap.set(sale('[data-i="$"] .sc__linea > span'), { yPercent: 110 })
+        gsap.set(entra('[data-i="$"] .sc__linea > span'), { yPercent: 0 })
+        gsap.set(sale('.sc__img[data-i="$"], .sc__info[data-i="$"]'), { autoAlpha: 0 })
+        gsap.set(entra('.sc__img[data-i="$"], .sc__info[data-i="$"]'), { autoAlpha: 1 })
+        return
+      }
+
+      // Si se cambia rápido, se termina la transición anterior al instante
+      animando.current?.progress(1)
+      // Limpia estados intermedios de los productos que no participan
+      showcase.forEach((_, k) => {
+        if (k === i || k === de) return
+        gsap.set(el.querySelectorAll(`[data-i="${k}"] .sc__linea > span`), { yPercent: 110 })
+        gsap.set(el.querySelectorAll(`.sc__img[data-i="${k}"], .sc__info[data-i="${k}"]`), { autoAlpha: 0 })
+      })
+
+      const dir = i > de ? 1 : -1
+      animando.current = gsap
+        .timeline({ defaults: { ease: 'expo.inOut' } })
+        // 1. Fondo y colores complementarios
+        .to(el, { '--fondo': p.fondo, '--tipo': p.tipo, '--ui': p.ui, duration: 0.9, ease: 'power2.inOut' }, 0)
+        // 2. Nombre gigante: sale hacia arriba, entra desde abajo
+        .to(sale('[data-i="$"] .sc__linea > span'), { yPercent: -110, duration: 0.6, stagger: 0.05, ease: 'expo.in' }, 0)
+        .fromTo(entra('[data-i="$"] .sc__linea > span'), { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.07, ease: 'expo.out' }, 0.45)
+        // 3. El empaque anterior se retira
+        .to(sale('.sc__img[data-i="$"]'), { autoAlpha: 0, yPercent: -10, xPercent: -8 * dir, scale: 0.92, rotate: -4 * dir, duration: 0.55, ease: 'power3.in' }, 0)
+        // 4. Nuevo empaque: escala y desplazamiento vertical
+        .fromTo(
+          entra('.sc__img[data-i="$"]'),
+          { autoAlpha: 0, yPercent: 14, xPercent: 6 * dir, scale: 0.88, rotate: 4 * dir },
+          { autoAlpha: 1, yPercent: 0, xPercent: 0, scale: 1, rotate: 0, duration: 1.1, ease: 'expo.out' },
+          0.5,
+        )
+        .fromTo('.sc__sombra', { scaleX: 1 }, { scaleX: 0.55, duration: 0.5, ease: 'power2.in', yoyo: true, repeat: 1 }, 0.1)
+        // 6. Información del producto
+        .to(sale('.sc__info[data-i="$"]'), { autoAlpha: 0, y: -12, duration: 0.35, ease: 'power2.in' }, 0)
+        .fromTo(entra('.sc__info[data-i="$"]'), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.6)
+    },
+    [moverIndicador],
+  )
+
+  // Teclado: flechas, Inicio y Fin dentro del selector
+  const onKey = (e) => {
+    const n = showcase.length
+    let i = null
+    if (e.key === 'ArrowRight') i = (activo + 1) % n
+    if (e.key === 'ArrowLeft') i = (activo - 1 + n) % n
+    if (e.key === 'Home') i = 0
+    if (e.key === 'End') i = n - 1
+    if (i === null) return
+    e.preventDefault()
+    seleccionar(i)
+    tabsRef.current[i]?.focus()
+  }
+
+  return (
+    <section className="sc" id="productos" ref={ref} aria-labelledby="sc-titulo">
+      <h2 id="sc-titulo" className="sr-only">Nuestros productos</h2>
+
+      <div className="sc__escena">
+        <div className="sc__arte">
+        <div className="sc__nombres" aria-hidden="true">
+          {showcase.map((p, i) => (
+            <p key={p.id} data-i={i} className={`sc__nombre display ${p.titulo.length > 1 ? 'sc__nombre--2' : ''}`}>
+              {p.titulo.map((l) => (
+                <span className="sc__linea" key={l}><span>{l}</span></span>
+              ))}
+            </p>
+          ))}
+        </div>
+
+        <div className="sc__producto">
+          <span className="sc__sombra" aria-hidden="true" />
+          {showcase.map((p, i) => (
+            <img
+              key={p.id}
+              data-i={i}
+              className={`sc__img ${p.sinSombra ? 'sc__img--plana' : ''}`}
+              src={p.img}
+              alt={i === activo ? p.alt : ''}
+              aria-hidden={i !== activo}
+              width="620"
+              height="580"
+              decoding="async"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="sc__pie">
+        <div className="sc__infos" id="sc-panel" role="tabpanel" aria-labelledby={`sc-tab-${showcase[activo].id}`}>
+          {showcase.map((p, i) => (
+            <div key={p.id} data-i={i} className="sc__info" aria-hidden={i !== activo}>
+              <span className="sc__cat">{p.categoria}</span>
+              <p className="sc__desc">{p.descripcion}</p>
+              {p.presentaciones ? (
+                <ul className="sc__pres" aria-label="Presentaciones">
+                  {p.presentaciones.map((x) => <li key={x}>{x}</li>)}
+                </ul>
+              ) : (
+                <p className="sc__nota">Ficha técnica bajo solicitud</p>
+              )}
+              <Enlace to={p.href} className="sc__cta" tabIndex={i === activo ? 0 : -1}>
+                Ver producto <Flecha />
+              </Enlace>
+            </div>
+          ))}
+        </div>
+
+        <div className="sc__selector">
+          <div className="sc__tabs" role="tablist" aria-label="Seleccionar producto" onKeyDown={onKey}>
+            {showcase.map((p, i) => (
+              <button
+                key={p.id}
+                ref={(b) => (tabsRef.current[i] = b)}
+                role="tab"
+                id={`sc-tab-${p.id}`}
+                aria-selected={i === activo}
+                aria-controls="sc-panel"
+                tabIndex={i === activo ? 0 : -1}
+                className={`sc__tab display ${i === activo ? 'is-on' : ''}`}
+                onClick={() => seleccionar(i)}
+              >
+                {p.titulo.join(' ')}
+              </button>
+            ))}
+            <span className="sc__indicador" ref={indicador} aria-hidden="true" />
+          </div>
+        </div>
+
+        <Enlace to="/productos" className="sc__ver">Ver todos los productos <Flecha /></Enlace>
+      </div>
+      </div>
+    </section>
+  )
+}

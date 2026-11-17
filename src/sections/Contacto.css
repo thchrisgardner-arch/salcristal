@@ -1,0 +1,45 @@
+.cta { position: relative; overflow: hidden;background: linear-gradient(var(--blanco), var(--blanco)) top / 100% 30px no-repeat, var(--marino); color: var(--blanco); padding: 0 0 clamp(90px, 10vw, 160px); }
+.cta__salinas { display: block; width: 100%; height: clamp(40px, 6vw, 90px); background: var(--blanco); margin-bottom: clamp(60px, 8vw, 120px); }
+.cta__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 100px); align-items: start; }
+.cta__texto { display: grid; gap: 30px; justify-items: start; }
+.cta__titulo { font-size: clamp(70px, 10vw, 170px); line-height: 0.86; }
+.cta__titulo .line-mask:last-child > span { font-style: italic; font-weight: 400; }
+.cta__texto .lead { color: rgba(255, 255, 255, 0.78); }
+.cta__datos { display: grid; gap: 16px; width: 100%; padding-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.18); }
+.cta__datos li { display: grid; grid-template-columns: 120px 1fr; gap: 4px 12px; font-size: 15px; }
+.cta__datos li span { grid-row: span 3; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.6; padding-top: 3px; }
+.cta__datos a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.cta__form { padding: clamp(24px, 3vw, 44px); border-radius: var(--radio); background: var(--marino-profundo); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.cta__form h3 { font-size: clamp(30px, 2.6vw, 42px); margin-bottom: 26px; }
+.cta__campos { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 26px; }
+.cta__ancho { grid-column: 1 / -1; }
+.cta__campos label { display: grid; gap: 8px; }
+.cta__campos span { font-size: 13px; font-weight: 600; opacity: 0.8; }
+.cta__campos input, .cta__campos select, .cta__campos textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--blanco);
+  font: inherit;
+  font-size: 16px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.cta__campos select option, .cta__campos select optgroup { color: var(--texto); }
+.cta__campos input:focus, .cta__campos select:focus, .cta__campos textarea:focus { outline: none; border-color: var(--sol); background: rgba(255, 255, 255, 0.08); }
+.cta__campos textarea { resize: vertical; }
+.cta__gracias { display: grid; gap: 12px; min-height: 280px; align-content: center; }
+.cta__gracias p { font-size: 40px; }
+.cta__gracias span { opacity: 0.7; }
+
+@media (max-width: 900px) {
+  .cta__grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .cta__campos { grid-template-columns: 1fr; }
+  .cta__datos li { grid-template-columns: 1fr; }
+  .cta__datos li span { grid-row: auto; }
+  .cta__form .btn, .cta__texto > .btn { width: 100%; justify-content: center; }
+}

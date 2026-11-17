@@ -1,0 +1,122 @@
+/* ---------- Tarjeta "Descubrir" del catálogo ---------- */
+.td {
+  --ease-td: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 20px;
+  background: var(--td-fondo);
+  color: var(--td-texto);
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  container-type: inline-size;
+  transform: translateZ(0) scale(1);
+  transition: transform 0.7s var(--ease-td), box-shadow 0.7s var(--ease-td);
+}
+
+/* Lienzo con el empaque: altura uniforme para toda la fila */
+.td__lienzo { position: relative; z-index: 1; flex: 1; aspect-ratio: 1 / 1.02; }
+
+/* Marquee tipográfico (detrás del empaque) */
+.td__marquee {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  align-content: center;
+  gap: 0.02em;
+  padding-bottom: 6%;
+  font-family: var(--f-display);
+  font-size: 27cqw;
+  line-height: 0.86;
+  text-transform: uppercase;
+  color: var(--td-tipo);
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(1.12);
+  transition: opacity 0.5s var(--ease-td), transform 0.9s var(--ease-td);
+  pointer-events: none;
+}
+.td__fila { display: flex; width: max-content; animation: td-marquee 16s linear infinite; animation-play-state: paused; }
+.td__fila--inversa { animation-direction: reverse; animation-duration: 19s; }
+.td__fila span { padding-right: 0.25em; }
+@keyframes td-marquee { to { transform: translateX(-50%); } }
+
+/* Empaque */
+.td__producto { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; pointer-events: none; }
+.td__producto img {
+  width: 80%; /* los PNG traen margen propio: 80% ≈ 60% de ocupación visual */
+  height: auto;
+  filter: drop-shadow(0 18px 18px rgba(0, 20, 45, 0.16));
+  transform: translateY(0) scale(1) rotate(0deg);
+  transition: transform 0.9s var(--ease-td), filter 0.9s var(--ease-td);
+  will-change: transform;
+}
+
+/* Botón circular */
+.td__boton {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 70%;
+  width: clamp(92px, 26cqw, 116px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  margin-left: calc(clamp(92px, 26cqw, 116px) / -2);
+  border-radius: 50%;
+  background: var(--td-boton-fondo);
+  color: var(--td-boton-texto);
+  font-family: var(--f-display);
+  font-size: clamp(15px, 4.4cqw, 19px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 12px 30px -10px rgba(0, 20, 45, 0.45);
+  opacity: 0;
+  transform: scale(0.4) rotate(-20deg);
+  pointer-events: none; /* invisible en estado normal: no debe recibir toques */
+  transition: opacity 0.4s var(--ease-td), transform 0.6s var(--ease-td);
+}
+.td__boton span { transition: transform 0.4s var(--ease-td); }
+.td__boton:hover span { transform: scale(1.08); }
+.td__boton:focus-visible { outline: 3px solid var(--sol); outline-offset: 4px; }
+
+/* Pie: nombre visible en estado normal (identificación rápida) */
+.td__pie { position: relative; z-index: 2; display: grid; gap: 4px; padding: 0 24px 22px; transition: opacity 0.4s var(--ease-td), transform 0.5s var(--ease-td); }
+.td__nombre { font-size: clamp(26px, 9cqw, 40px); line-height: 0.95; }
+.td__desc { font-size: 13px; line-height: 1.4; opacity: 0.75; }
+
+/* ---------- Estado activo: hover (puntero fino), foco de teclado o primer toque ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .td:hover { transform: translateZ(0) scale(1.025); box-shadow: 0 30px 60px -30px rgba(0, 20, 45, 0.45); }
+  .td:hover .td__marquee { opacity: 1; transform: scale(1); }
+  .td:hover .td__fila { animation-play-state: running; }
+  .td:hover .td__producto img { transform: translateY(-4%) scale(1.16) rotate(-2deg); filter: drop-shadow(0 30px 26px rgba(0, 20, 45, 0.28)); }
+  .td:hover .td__boton { opacity: 1; transform: scale(1) rotate(0deg); transition-delay: 0.08s; pointer-events: auto; }
+  .td:hover .td__pie { opacity: 0; transform: translateY(10px); }
+}
+.td:focus-within,
+.td.is-activo { transform: translateZ(0) scale(1.025); box-shadow: 0 30px 60px -30px rgba(0, 20, 45, 0.45); }
+.td:focus-within .td__marquee,
+.td.is-activo .td__marquee { opacity: 1; transform: scale(1); }
+.td:focus-within .td__fila,
+.td.is-activo .td__fila { animation-play-state: running; }
+.td:focus-within .td__producto img,
+.td.is-activo .td__producto img { transform: translateY(-4%) scale(1.16) rotate(-2deg); filter: drop-shadow(0 30px 26px rgba(0, 20, 45, 0.28)); }
+.td:focus-within .td__boton,
+.td.is-activo .td__boton { opacity: 1; transform: scale(1) rotate(0deg); pointer-events: auto; }
+.td:focus-within .td__pie,
+.td.is-activo .td__pie { opacity: 0; transform: translateY(10px); }
+
+/* Táctil: el nombre siempre visible y un indicador discreto de que la tarjeta se puede tocar */
+@media (hover: none) {
+  .td { transition-duration: 0.5s; }
+  .td.is-activo .td__pie { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .td__fila { animation: none; }
+  .td, .td__producto img, .td__boton, .td__marquee { transition-duration: 0.01ms; }
+}

@@ -1,0 +1,48 @@
+.ch { background: var(--sal); color: var(--marino); padding: clamp(90px, 10vw, 160px) 0; }
+.ch__cabeza { display: grid; gap: 22px; margin-bottom: clamp(40px, 6vw, 90px); }
+.ch__cabeza h2 .line-mask:nth-child(2) > span { font-style: italic; font-weight: 400; }
+.ch__etiqueta { justify-self: start; padding: 6px 14px; border: 1px solid; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+
+.ch__cuerpo { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 6vw, 110px); align-items: start; }
+.ch__fijo {
+  position: sticky;
+  top: calc(var(--header-h) + 20px);
+  height: calc(100svh - var(--header-h) - 40px);
+  min-height: 520px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radio);
+  background: var(--cielo);
+  overflow: hidden;
+}
+.ch__producto { position: relative; display: grid; place-items: center; width: 100%; }
+.ch__producto img { position: relative; z-index: 1; width: min(84%, 520px); filter: drop-shadow(0 40px 34px rgba(0, 26, 56, 0.2)); }
+.ch__palabra {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(120px, 15vw, 260px);
+  line-height: 0.8;
+  text-transform: uppercase;
+  color: var(--marino);
+  opacity: 0.09;
+  white-space: nowrap;
+}
+.ch__contador { position: absolute; left: 24px; bottom: 20px; font-size: 14px; font-weight: 600; letter-spacing: 0.1em; }
+.ch__contador b { font-family: var(--f-display); font-size: 28px; font-weight: 600; }
+
+.ch__pasos { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(70px, 9vw, 140px); padding-block: 4vh 10vh; }
+.ch__paso { display: grid; gap: 16px; }
+.ch__foto { aspect-ratio: 5 / 4; border-radius: var(--radio); overflow: hidden; margin-bottom: 12px; }
+.ch__foto img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); }
+.ch__n { font-size: 13px; font-weight: 700; letter-spacing: 0.16em; color: var(--marino-medio); }
+.ch__paso h3 { font-size: clamp(34px, 3.4vw, 54px); line-height: 0.95; }
+.ch__paso p { font-size: 17px; line-height: 1.6; color: var(--texto-suave); max-width: 42ch; }
+
+@media (max-width: 900px) {
+  .ch__cuerpo { grid-template-columns: 1fr; }
+  .ch__fijo { position: relative; top: 0; height: auto; min-height: 0; aspect-ratio: 1; }
+  .ch__contador { display: none; }
+  .ch__pasos { gap: 60px; padding-block: 0; }
+}
