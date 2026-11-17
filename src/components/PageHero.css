@@ -1,55 +1,74 @@
-/* Hero interno: fondo blanco para que las ilustraciones (tinta sobre blanco) se integren sin recuadro */
+/* Hero interno: ilustración a gran escala sobre blanco y título centrado encima.
+   Fondo blanco para que las ilustraciones (tinta sobre blanco) se integren sin recuadro. */
 .ph {
   position: relative;
-  min-height: min(92svh, 920px);
-  display: flex;
-  align-items: flex-start;
+  height: 100svh;
+  min-height: 640px;
+  max-height: 1000px;
   background: var(--blanco);
   color: var(--marino);
   overflow: hidden;
   isolation: isolate;
 }
-.ph__arte { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.ph__arte { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .ph__capa { position: absolute; display: block; }
-.ph__capa img { width: 100%; height: auto; mix-blend-mode: multiply; }
+.ph__capa img { display: block; mix-blend-mode: multiply; }
 
-.ph__contenido { position: relative; padding-top: calc(var(--header-h) + clamp(40px, 6vw, 90px)); padding-bottom: 60px; }
-.ph__migas { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 26px; font-size: 13px; font-weight: 600; }
+/* Composiciones */
+.ph__capa--full { inset: 0; }
+.ph__capa--full img { width: 100%; height: 100%; object-fit: cover; object-position: var(--ph-pos, 50% 100%); }
+/* Variante: ilustración corrida a la izquierda para liberar el centro (banda transportadora) */
+.ph__capa--full.ph__capa--izq { left: -16%; }
+.ph__capa--full.ph__capa--izq img { object-position: 0% 100%; }
+.ph__capa--suelo { left: -2%; right: -2%; bottom: 0; }
+.ph__capa--suelo img { width: 100%; height: auto; max-height: 38vh; object-fit: cover; object-position: 50% 100%; }
+.ph__capa--figura { right: -10%; bottom: 0; height: 72%; }
+.ph__capa--figura img { height: 100%; width: auto; }
+.ph__capa--montes { right: 0; bottom: 0; height: 80%; overflow: hidden; }
+.ph__capa--montes img { height: calc(100% + 6px); width: auto; margin: -3px; } /* el archivo original trae un filete gris en el borde */
+
+/* Título centrado */
+.ph__centro {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 22px;
+  padding: calc(var(--header-h) + 20px) var(--gutter) 40px;
+  text-align: center;
+}
+.ph__titulo { font-size: var(--ph-titulo); line-height: 0.88; text-align: center; }
+.ph__titulo .line-mask > span { white-space: nowrap; }
+.ph__migas { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); }
 .ph__migas a { opacity: 0.65; transition: opacity 0.3s; }
 .ph__migas a:hover { opacity: 1; }
 .ph__migas i { font-style: normal; opacity: 0.35; margin-right: 8px; }
 .ph__migas b { font-weight: 700; }
-.ph__titulo { font-size: clamp(64px, 8.6vw, 156px); line-height: 0.9; }
-.ph__titulo .line-mask:nth-child(2) > span { font-weight: 400; }
-.ph__bajada { position: relative; max-width: 40ch; margin-top: 28px; font-size: clamp(17px, 1.3vw, 19px); line-height: 1.6; color: var(--texto-suave); }
-.ph__acciones { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 
-/* Composiciones por página (sobre las ilustraciones originales) */
-.ph__capa--ancha { right: -2%; bottom: 0; width: min(66vw, 1080px); }
-.ph__capa--derecha { right: 2%; bottom: 0; width: min(46vw, 640px); }
-.ph__capa--retrato { right: 6%; bottom: 0; width: min(30vw, 400px); }
-.ph__capa--paisaje { right: 22%; bottom: 2%; width: min(46vw, 700px); }
-.ph__capa--mujer { right: 3%; bottom: -2%; width: min(36vw, 520px); }
-.ph__capa--montes { right: 0; bottom: 0; width: min(40vw, 560px); overflow: hidden; }
-.ph__capa--montes img { width: calc(100% + 6px); margin: -3px; } /* el archivo original trae un filete gris en el borde */
-.ph__capa--historia { width: min(62vw, 980px); }
-.ph__capa--contacto { right: 26%; }
+/* Franja de introducción bajo el hero */
+.ph__intro { display: grid; justify-items: center; gap: 26px; padding: clamp(50px, 6vw, 90px) var(--gutter) clamp(20px, 3vw, 40px); background: var(--blanco); color: var(--marino); text-align: center; }
+.ph__bajada { max-width: 46ch; font-size: clamp(18px, 1.5vw, 22px); line-height: 1.55; color: var(--texto-suave); }
+.ph__acciones { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 
+/* Tablet */
 @media (max-width: 1080px) {
-  .ph { min-height: 0; flex-direction: column; }
-  .ph__contenido { padding-bottom: 0; }
-  .ph__arte { position: relative; inset: auto; order: 2; height: clamp(300px, 70vw, 560px); width: 100%; }
-  .ph__capa--ancha { width: 110%; right: -10%; }
-  .ph__capa--derecha, .ph__capa--mujer { width: 62%; }
-  .ph__capa--paisaje { width: 70%; right: 30%; }
-  .ph__capa--retrato { width: 40%; }
-  .ph__capa--montes { width: 60%; }
+  .ph { height: 86svh; min-height: 600px; }
+  .ph__capa--figura { height: 70%; right: -8%; }
+  .ph__capa--montes { height: 72%; }
 }
+
+/* Móvil: versión vertical original de cada ilustración a pantalla completa, título en la parte alta */
 @media (max-width: 767px) {
-  .ph__titulo { font-size: clamp(56px, 18vw, 96px); }
-  .ph__arte { height: auto; aspect-ratio: 720 / 760; }
-  /* En móvil se usa la versión vertical original: una sola capa a todo el ancho */
-  .ph__capa { left: 0; right: 0 !important; bottom: 0; width: 100% !important; }
-  .ph__capa.solo-desktop { display: none; }
-  .ph__capa img { width: 100%; height: 100%; object-fit: cover; object-position: bottom; }
+  .ph { height: 100svh; min-height: 620px; max-height: 860px; }
+  .ph__capa { inset: 0 !important; height: auto !important; width: auto !important; }
+  .ph__capa.solo-desktop, .ph__capa.oculta-movil { display: none; }
+  .ph__capa img { width: 100% !important; height: 100% !important; max-height: none !important; margin: 0 !important; object-fit: cover; object-position: 50% 100%; }
+  .ph__capa--montes img { object-position: 50% 100%; transform: scale(1.03); transform-origin: 50% 100%; } /* oculta el filete gris del borde del archivo original */
+  /* Personaje vertical en móvil: abajo, sin tapar el título */
+  .ph__capa.figura-movil { top: auto !important; height: 66% !important; }
+  .ph__capa.figura-movil img { object-fit: contain; object-position: 70% 100%; }
+  .ph__centro { place-content: start center; padding-top: calc(var(--header-h) + 34px); }
+  .ph__titulo { font-size: var(--ph-titulo-movil); }
 }

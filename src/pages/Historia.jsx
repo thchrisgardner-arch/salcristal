@@ -14,7 +14,7 @@ export default function Historia() {
         migas={[{ label: 'Nosotros', to: '/nosotros' }, { label: 'Nuestra historia' }]}
         lineas={['Nuestra', 'historia']}
         bajada="Indusalca nace por la unión de mentes maestras y soñadoras, dispuestas y comprometidas con una misma labor: construir país."
-        capas={[{ src: '/img/heros/historia.png', movil: '/img/heros/historia-movil.webp', className: 'ph__capa--ancha ph__capa--historia' }]}
+        capas={[{ src: '/img/heros/historia.png', movil: '/img/heros/historia-movil.webp', className: 'ph__capa--full' }]}
       />
 
       <section className="bloque bloque--sal">

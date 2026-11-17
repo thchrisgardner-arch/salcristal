@@ -67,3 +67,6 @@
   .ficha__datos div { grid-template-columns: 1fr; gap: 6px; }
   .ficha__acciones .btn { flex: 1 1 auto; justify-content: center; }
 }
+
+/* Botón «Ver todos» bajo cada grupo del catálogo */
+.catalogo__ver { display: flex; justify-content: center; margin-top: clamp(28px, 3vw, 44px); }

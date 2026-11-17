@@ -14,7 +14,7 @@ export default function Nosotros() {
         migas={[{ label: 'Nosotros' }]}
         lineas={['Quiénes', 'somos']}
         bajada="Una compañía colombiana productora, procesadora y comercializadora de sal para consumo humano, industrial y animal."
-        capas={[{ src: '/img/heros/nosotros.jpg', movil: '/img/heros/nosotros-movil.webp', className: 'ph__capa--ancha ph__capa--nosotros' }]}
+        capas={[{ src: '/img/heros/nosotros.jpg', movil: '/img/heros/nosotros-movil.webp', className: 'ph__capa--full' }]}
       />
 
       <section className="bloque bloque--sal">

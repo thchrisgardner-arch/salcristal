@@ -3,10 +3,22 @@ import Pagina from '../components/Pagina'
 import PageHero from '../components/PageHero'
 import GrillaDescubrir from '../components/GrillaDescubrir'
 import Cierre from '../components/Cierre'
-import { Lineas } from '../components/Graficos'
+import { Lineas, Flecha } from '../components/Graficos'
+import { Enlace } from '../lib/transicion'
 import { catalogoHumano, catalogoIndustrial } from './catalogoData'
 import './pages.css'
 import './productos.css'
+
+// En «Todos» cada grupo muestra una vista previa y un botón hacia su página completa
+const VISTA_PREVIA = 3
+
+function VerTodos({ to, texto }) {
+  return (
+    <div className="catalogo__ver" data-reveal>
+      <Enlace to={to} className="btn">{texto} <Flecha /></Enlace>
+    </div>
+  )
+}
 
 const FILTROS = [
   { id: 'todos', label: 'Todos' },
@@ -26,8 +38,8 @@ export default function Catalogo() {
         lineas={['Nuestros', 'productos']}
         bajada="Sal marina yodada y fluorizada para el hogar y referencias de uso industrial con pureza de origen natural."
         capas={[
-          { src: '/img/heros/humano-paisaje.webp', movil: '/img/heros/humano-movil.webp', className: 'ph__capa--paisaje' },
-          { src: '/img/heros/humano-mujer.webp', className: 'ph__capa--mujer solo-desktop' },
+          { src: '/img/heros/humano-paisaje.webp', movil: '/img/heros/humano-movil.webp', className: 'ph__capa--suelo' },
+          { src: '/img/heros/humano-mujer.webp', className: 'ph__capa--figura solo-desktop' },
         ]}
       />
 
@@ -47,7 +59,8 @@ export default function Catalogo() {
                 <Lineas className="display h2" lines={['Consumo', 'humano']} />
                 <p className="lead" data-reveal>Sal marina refinada, yodada y fluorizada para consumo humano.</p>
               </div>
-              <GrillaDescubrir productos={catalogoHumano} />
+              <GrillaDescubrir productos={filtro === 'todos' ? catalogoHumano.slice(0, VISTA_PREVIA) : catalogoHumano} />
+              {filtro === 'todos' && <VerTodos to="/productos/consumo-humano" texto="Ver todo consumo humano" />}
             </div>
           )}
 
@@ -57,7 +70,8 @@ export default function Catalogo() {
                 <Lineas className="display h2" lines={['Consumo', 'industrial']} />
                 <p className="lead" data-reveal>Sal Marina de la Guajira para usos industriales. Pureza de origen natural.</p>
               </div>
-              <GrillaDescubrir productos={catalogoIndustrial} />
+              <GrillaDescubrir productos={filtro === 'todos' ? catalogoIndustrial.slice(0, VISTA_PREVIA) : catalogoIndustrial} />
+              {filtro === 'todos' && <VerTodos to="/productos/consumo-industrial" texto={`Ver las ${catalogoIndustrial.length} referencias industriales`} />}
             </div>
           )}
 

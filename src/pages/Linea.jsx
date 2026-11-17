@@ -17,8 +17,8 @@ function Humano() {
         lineas={['Consumo', 'humano']}
         bajada="Sal marina yodada y fluorizada para consumo humano. Pureza de origen natural, del mar de La Guajira a tu mesa."
         capas={[
-          { src: '/img/heros/humano-paisaje.webp', movil: '/img/heros/humano-movil.webp', className: 'ph__capa--paisaje' },
-          { src: '/img/heros/humano-mujer.webp', className: 'ph__capa--mujer solo-desktop' },
+          { src: '/img/heros/humano-paisaje.webp', movil: '/img/heros/humano-movil.webp', className: 'ph__capa--suelo' },
+          { src: '/img/heros/humano-mujer.webp', className: 'ph__capa--figura solo-desktop' },
         ]}
       />
 
@@ -79,7 +79,7 @@ function Industrial() {
         migas={[{ label: 'Productos', to: '/productos' }, { label: 'Consumo industrial' }]}
         lineas={['Consumo', 'industrial']}
         bajada="Sal Marina de la Guajira para usos industriales, producida en nuestras plantas de Uribia con pureza de origen natural."
-        capas={[{ src: '/img/heros/infraestructura.jpg', movil: '/img/heros/infraestructura-movil.webp', className: 'ph__capa--ancha' }]}
+        capas={[{ src: '/img/heros/infraestructura.jpg', movil: '/img/heros/infraestructura-movil.webp', className: 'ph__capa--full ph__capa--izq' }]}
         acciones={<a href={`https://wa.me/${empresa.whatsapp}`} target="_blank" rel="noopener" className="btn">Contactar con ventas <Flecha /></a>}
       />
 

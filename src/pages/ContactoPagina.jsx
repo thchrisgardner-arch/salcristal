@@ -16,8 +16,8 @@ export default function ContactoPagina() {
         lineas={['Hablemos', 'de sal']}
         bajada="¿Tienes alguna duda, sugerencia o necesitas asistencia? Escríbenos y te responderemos pronto."
         capas={[
-          { src: '/img/heros/contacto-paisaje.png', movil: '/img/heros/contacto-movil.webp', className: 'ph__capa--paisaje ph__capa--contacto' },
-          { src: '/img/heros/contacto-hombre.png', className: 'ph__capa--retrato solo-desktop' },
+          { src: '/img/heros/contacto-paisaje.png', className: 'ph__capa--suelo oculta-movil' },
+          { src: '/img/heros/contacto-hombre.png', className: 'ph__capa--figura figura-movil' },
         ]}
       />
 

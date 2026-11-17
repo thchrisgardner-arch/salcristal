@@ -13,7 +13,7 @@ export default function Infraestructura() {
         migas={[{ label: 'Nosotros', to: '/nosotros' }, { label: 'Infraestructura' }]}
         lineas={['Nuestra', 'infraestructura']}
         bajada="Realizamos nuestras operaciones de producción desde nuestras plantas ubicadas en el municipio de Uribia, La Guajira (Colombia)."
-        capas={[{ src: '/img/heros/infraestructura.jpg', movil: '/img/heros/infraestructura-movil.webp', className: 'ph__capa--ancha' }]}
+        capas={[{ src: '/img/heros/infraestructura.jpg', movil: '/img/heros/infraestructura-movil.webp', className: 'ph__capa--full ph__capa--izq' }]}
       />
 
       <section className="bloque bloque--profundo">
