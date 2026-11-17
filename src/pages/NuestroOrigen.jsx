@@ -1,10 +1,10 @@
 import { useLayoutEffect, useRef } from 'react'
 import Pagina from '../components/Pagina'
 import Cierre from '../components/Cierre'
+import Compromiso from '../sections/Compromiso'
 import { Lineas } from '../components/Graficos'
 import { Enlace } from '../lib/transicion'
 import { gsap, reducedMotion } from '../lib/motion'
-import { cifrasWayuu, ods } from '../data'
 import './pages.css'
 import './institucional.css'
 
@@ -36,30 +36,14 @@ export default function NuestroOrigen() {
             <span><i aria-hidden="true">/</i><b aria-current="page">Nuestro origen</b></span>
           </nav>
           <h1 className="display">
-            {['Ellos nos', 'recibieron en', 'sus tierras'].map((l) => <span className="line-mask" key={l}><span>{l}</span></span>)}
+            {['Nuestro', 'origen'].map((l) => <span className="line-mask" key={l}><span>{l}</span></span>)}
           </h1>
-          <p>…y nosotros los hicimos parte de esta gran familia.</p>
+          <p>Uribia, La Guajira: el mar, la sal y la comunidad wayúu que nos recibió en sus tierras.</p>
         </div>
       </section>
 
-      <section className="bloque bloque--sal">
-        <div className="wrap">
-          <div className="cabeza-2">
-            <Lineas className="display h2" lines={['Aliados de', 'nuestras comunidades']} />
-            <p className="lead" data-reveal>
-              Buscamos convertirnos en aliados a partir de una relación de confianza, intercambio y beneficio mutuo con nuestras comunidades locales. Nos motiva trabajar por el desarrollo sostenible de la región.
-            </p>
-          </div>
-          <ul className="origenp__cifras">
-            {cifrasWayuu.map((c) => (
-              <li key={c.etiqueta} data-reveal>
-                <strong>{c.prefijo}{c.valor.toLocaleString('es-CO')}{c.sufijo}</strong>
-                <span>{c.etiqueta}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* Sección trasladada desde el Home, con su diseño original */}
+      <Compromiso />
 
       <section className="bloque bloque--blanco">
         <div className="wrap grid-2">
@@ -73,22 +57,6 @@ export default function NuestroOrigen() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="bloque bloque--cielo">
-        <div className="wrap">
-          <div className="cabeza-2">
-            <Lineas className="display h2" lines={['Objetivos de', 'Desarrollo Sostenible']} />
-            <p className="lead" data-reveal>
-              Para aportar a la Agenda 2030 y a las metas planteadas para Colombia, Indusalca enmarca su trabajo y compromiso social en estas esferas:
-            </p>
-          </div>
-          <ol className="ods">
-            {ods.map((o, i) => (
-              <li key={o} data-reveal><span>{String(i + 1).padStart(2, '0')}</span><h3 className="display">{o}</h3></li>
-            ))}
-          </ol>
         </div>
       </section>
 

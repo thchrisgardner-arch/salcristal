@@ -1,9 +1,9 @@
 import Pagina from '../components/Pagina'
 import PageHero from '../components/PageHero'
+import NosotrosSeccion from '../sections/Nosotros'
 import Cierre from '../components/Cierre'
-import { Lineas, Flecha } from '../components/Graficos'
+import { Flecha } from '../components/Graficos'
 import { Enlace } from '../lib/transicion'
-import { valores, empresa } from '../data'
 import './pages.css'
 import './institucional.css'
 
@@ -17,35 +17,8 @@ export default function Nosotros() {
         capas={[{ src: '/img/heros/nosotros.jpg', movil: '/img/heros/nosotros-movil.webp', className: 'ph__capa--full' }]}
       />
 
-      <section className="bloque bloque--sal">
-        <div className="wrap inst__intro">
-          <p className="cifra-xl" data-reveal>+20</p>
-          <div className="texto-largo">
-            <p className="inst__destacado display" data-reveal>Años de trayectoria en el mercado nacional</p>
-            <p data-reveal>
-              Somos una compañía colombiana productora, procesadora y comercializadora de sal para consumo humano, industrial y animal, ubicada en {empresa.ubicacion}, que cuenta con más de 20 años de trayectoria en el mercado nacional.
-            </p>
-            <p data-reveal>Nos destacan los altos estándares y la calidad de nuestros productos, que responden a las necesidades de nuestros clientes.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="bloque bloque--marino">
-        <div className="wrap">
-          <div className="cabeza-2">
-            <Lineas className="display h2" lines={['Valores', 'corporativos']} />
-            <p className="lead" data-reveal>Los principios que guían a Indusalca y a cada persona que hace parte de la compañía.</p>
-          </div>
-          <ol className="inst__valores">
-            {valores.map((v, i) => (
-              <li key={v} data-reveal>
-                <span>{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="display">{v}</h3>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+      {/* Sección trasladada desde el Home, con su diseño original */}
+      <NosotrosSeccion />
 
       <section className="bloque bloque--sal">
         <div className="wrap">

@@ -49,7 +49,6 @@ export default function Origen() {
 
         <figure className="origen__foto">
           <img src="/img/fotos/group-6.jpg" alt="Mujer wayúu sostiene sal marina en sus manos frente a una montaña de sal" loading="lazy" data-parallax="6" />
-          <figcaption>Pureza de origen natural</figcaption>
         </figure>
       </div>
     </section>

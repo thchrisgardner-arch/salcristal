@@ -10,7 +10,7 @@
 .ind__fila {
   position: relative;
   display: grid;
-  grid-template-columns: 60px 1fr auto 28px;
+  grid-template-columns: 1fr auto 28px;
   align-items: center;
   gap: 24px;
   padding: 22px 6px;
@@ -30,7 +30,6 @@
 .ind__lista ul { position: relative; z-index: 1; isolation: isolate; }
 .ind__fila:hover, .ind__fila:focus-visible { padding-left: 22px; padding-right: 22px; }
 .ind__fila:hover::before { transform: scaleY(1); }
-.ind__num { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.55; }
 .ind__thumb { display: none; }
 .ind__nombre { font-size: clamp(30px, 3.6vw, 58px); line-height: 1; text-transform: uppercase; }
 .ind__meta { font-size: 13px; letter-spacing: 0.04em; opacity: 0.6; }
@@ -79,7 +78,7 @@
 }
 @media (max-width: 767px) {
   .ind__fila { grid-template-columns: 64px 1fr 22px; gap: 14px; padding: 14px 0; }
-  .ind__num, .ind__meta { display: none; }
+  .ind__meta { display: none; }
   .ind__thumb { display: block; width: 64px; height: 64px; object-fit: contain; }
   .ind__nombre { font-size: 26px; }
   .ind__plantas { grid-template-columns: 1fr; }

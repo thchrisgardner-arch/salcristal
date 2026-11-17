@@ -24,7 +24,6 @@ export default function Hero({ listo }) {
         .from('.hero__media', { scale: 1.18, duration: 2.2 }, 0)
         .from('.hero__titulo .line-mask > span', { yPercent: 115, duration: 1.4, stagger: 0.1 }, 0.1)
         .from('.hero__bajada > *', { autoAlpha: 0, y: 24, duration: 1, stagger: 0.08 }, 0.6)
-        .from('.hero__meta > *', { autoAlpha: 0, duration: 1, stagger: 0.1 }, 0.9)
     }, el)
     return () => ctx.revert()
   }, [listo])
@@ -52,11 +51,6 @@ export default function Hero({ listo }) {
       <div className="hero__velo" />
 
       <div className="hero__contenido wrap">
-        <p className="hero__meta">
-          <span>Sal marina</span>
-          <span>Uribia · La Guajira</span>
-          <span>Más de 20 años</span>
-        </p>
 
         <h1 className="hero__titulo display">
           <span className="line-mask"><span>La esencia</span></span>

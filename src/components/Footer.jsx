@@ -1,11 +1,26 @@
 import { empresa, productosHumano } from '../data'
 import { Enlace } from '../lib/transicion'
+import { Flecha } from './Graficos'
 import './Footer.css'
 
 export default function Footer() {
   return (
     <footer className="footer">
-      <img className="footer__ilustracion" src="/img/marca/ilustracion-footer.png" alt="" loading="lazy" aria-hidden="true" />
+      <div className="footer__arte">
+        <img className="footer__ilustracion" src="/img/marca/ilustracion-footer.png" alt="" loading="lazy" aria-hidden="true" />
+        {/* Mensaje de cierre: lema de los empaques de Sal Cristal */}
+        <div className="footer__mensaje">
+          <p className="footer__titulo display">
+            <span className="line-mask"><span>Pureza de</span></span>
+            <span className="line-mask"><span>origen natural</span></span>
+          </p>
+          <p className="footer__bajada">Sal marina de Uribia, La Guajira, para tu mesa y para tu industria.</p>
+          <div className="footer__ctas">
+            <Enlace to="/contacto" className="btn btn--sol">Solicitar información <Flecha /></Enlace>
+            <Enlace to="/productos" className="btn btn--borde">Ver productos</Enlace>
+          </div>
+        </div>
+      </div>
       <div className="wrap">
         <div className="footer__grid">
           <div className="footer__marca">

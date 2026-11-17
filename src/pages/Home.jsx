@@ -4,8 +4,6 @@ import Productos from '../sections/Productos'
 import Origen from '../sections/Origen'
 import ConsumoHumano from '../sections/ConsumoHumano'
 import Industrial from '../sections/Industrial'
-import Nosotros from '../sections/Nosotros'
-import Compromiso from '../sections/Compromiso'
 import Clientes from '../sections/Clientes'
 import Contacto from '../sections/Contacto'
 
@@ -17,8 +15,6 @@ export default function Home({ listo }) {
       <Origen />
       <ConsumoHumano />
       <Industrial />
-      <Nosotros />
-      <Compromiso />
       <Clientes />
       <Contacto />
     </Pagina>

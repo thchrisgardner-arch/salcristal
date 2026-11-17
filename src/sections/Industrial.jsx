@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap, reducedMotion, scrollToTarget } from '../lib/motion'
 import { Lineas, Flecha } from '../components/Graficos'
-import { productosIndustrial, plantas, certificaciones, empresa } from '../data'
+import { productosIndustrial, empresa } from '../data'
 import { Enlace } from '../lib/transicion'
 import './Industrial.css'
 
@@ -58,7 +58,6 @@ export default function Industrial() {
                   onFocus={() => setActivo(i)}
                   onBlur={() => setActivo(null)}
                   >
-                  <span className="ind__num">{String(i + 1).padStart(2, '0')}</span>
                   <img className="ind__thumb" src={p.img} alt="" loading="lazy" />
                   <span className="ind__nombre display">{p.nombre}</span>
                   <span className="ind__meta">Ficha técnica bajo solicitud</span>
@@ -69,27 +68,7 @@ export default function Industrial() {
           </ul>
         </div>
 
-        <div className="ind__infra">
-          <div className="ind__bodega" data-reveal-img>
-            <img src="/img/fotos/consumo-industrial.webp" alt="Bodega con sacos de sal apilados en estibas" loading="lazy" />
-          </div>
-          <div className="ind__cifra">
-            <strong className="display" data-reveal>{empresa.instalaciones}</strong>
-            <p data-reveal>de instalaciones en Uribia, La Guajira, para los procesos de valor agregado.</p>
-            <ul className="ind__certs" data-reveal>
-              {certificaciones.map((c) => <li key={c}>{c}</li>)}
-            </ul>
-          </div>
-        </div>
-
-        <ul className="ind__plantas">
-          {plantas.map((p) => (
-            <li key={p.nombre} data-reveal>
-              <div className="ind__planta-foto"><img src={p.img} alt={p.nombre} loading="lazy" /></div>
-              <h3 className="display">{p.nombre}</h3>
-            </li>
-          ))}
-        </ul>
+        {/* Infraestructura (45.000 m², certificaciones y plantas) se muestra en Nosotros › Infraestructura */}
 
         <div className="ind__cta" data-reveal>
           <p className="display">¿Necesitas sal para tu proceso productivo?</p>

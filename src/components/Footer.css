@@ -1,5 +1,30 @@
 .footer { position: relative; background: var(--marino-profundo); color: rgba(255, 255, 255, 0.82); padding-bottom: 30px; overflow: hidden; }
-.footer__ilustracion { width: 100%; max-width: none; height: auto; opacity: 0.22; margin-bottom: clamp(30px, 4vw, 60px); }
+/* Alto reservado (proporción de la ilustración) para que el mensaje no salte mientras carga la imagen */
+.footer__arte { position: relative; width: 100%; height: max(540px, 23vw); margin-bottom: clamp(30px, 4vw, 60px); } /* 23vw ≈ proporción de la ilustración */
+.footer__ilustracion { position: absolute; inset: 0; width: 100%; max-width: none; height: 100%; object-fit: cover; object-position: 50% 100%; opacity: 0.22; }
+.footer__mensaje {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: clamp(14px, 1.6vw, 22px);
+  padding: clamp(70px, 8vw, 120px) var(--gutter) 20px; /* aire respecto al borde superior del footer */
+  text-align: center;
+  color: var(--blanco);
+}
+.footer__titulo { font-size: clamp(54px, 7.2vw, 128px); line-height: 0.88; }
+.footer__titulo { color: var(--sol); }
+.footer__ctas .btn--borde { color: var(--sol); --hover: rgba(242, 194, 48, 0.14); }
+.footer__bajada { max-width: 40ch; font-size: clamp(16px, 1.3vw, 19px); color: rgba(255, 255, 255, 0.78); }
+.footer__ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 6px; }
+/* Móvil: la ilustración es angosta, el mensaje pasa a flujo normal con la ilustración detrás */
+@media (max-width: 767px) {
+  .footer__arte { height: auto; }
+  .footer__ilustracion { top: auto; height: auto; aspect-ratio: 2846 / 655; }
+  .footer__mensaje { position: relative; padding: 60px 20px 90px; }
+  .footer__ctas .btn { flex: 1 1 auto; justify-content: center; }
+}
 .footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.3fr; gap: 40px; padding-bottom: 50px; border-bottom: 1px solid rgba(255, 255, 255, 0.14); }
 .footer__marca img { height: 54px; width: auto; margin-bottom: 18px; }
 .footer__marca p { font-size: 15px; max-width: 30ch; }
