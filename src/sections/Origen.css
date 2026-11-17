@@ -1,11 +1,11 @@
 .origen {
   position: relative;
-  background: linear-gradient(var(--sal), var(--sal)) top / 100% 30px no-repeat, var(--marino);
+  background: linear-gradient(var(--sc-fondo, var(--sal)), var(--sc-fondo, var(--sal))) top / 100% 30px no-repeat, var(--marino);
   color: var(--blanco);
   padding-bottom: clamp(90px, 10vw, 160px);
   overflow: hidden;
 }
-.origen__salinas-top { display: block; width: 100%; height: clamp(40px, 6vw, 90px); background: var(--sal); margin-bottom: -1px; }
+.origen__salinas-top { display: block; width: 100%; height: clamp(40px, 6vw, 90px); background: var(--sc-fondo, var(--sal)); margin-bottom: -1px; }
 
 .origen__cinta { padding: clamp(40px, 6vw, 90px) 0 clamp(30px, 4vw, 60px); white-space: nowrap; }
 .origen__cinta-inner {

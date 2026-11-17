@@ -80,7 +80,7 @@ export default function Hero({ listo }) {
         <span />
       </button>
 
-      <Salinas className="hero__salinas" color="var(--sal)" />
+      <Salinas className="hero__salinas" color="var(--sc-fondo, var(--sal))" />
     </section>
   )
 }

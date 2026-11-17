@@ -10,10 +10,21 @@ import './Productos.css'
  * Todos los productos se renderizan apilados (imágenes precargadas, sin saltos de layout)
  * y GSAP coordina la transición: fondo → nombre gigante → empaque → indicador → información.
  */
+// Tamaño del nombre gigante según su línea más larga (Sherman ≈ 0,42 em por letra + 0,06 em de espaciado)
+function tamanoNombre(lineas) {
+  const largo = Math.max(...lineas.map((l) => l.length))
+  const dos = lineas.length > 1
+  return {
+    '--sc-tam': `min(${(90 / (largo * 0.48)).toFixed(1)}vw, ${dos ? 34 : 60}svh)`,
+    '--sc-tam-m': `min(${(92 / (largo * 0.48)).toFixed(1)}vw, ${dos ? 26 : 38}vw)`,
+  }
+}
+
 export default function Productos() {
   const [activo, setActivo] = useState(0)
   const actual = useRef(0)
   const animando = useRef(null)
+  const entrada = useRef(null)
   const ref = useRef(null)
   const tabsRef = useRef([])
   const indicador = useRef(null)
@@ -37,6 +48,8 @@ export default function Productos() {
     const p = showcase[0]
     const el = ref.current
     gsap.set(el, { '--fondo': p.fondo, '--tipo': p.tipo, '--ui': p.ui })
+    // Las montañas del hero y de Origen toman el color del producto activo
+    gsap.set(document.documentElement, { '--sc-fondo': p.fondo })
     showcase.forEach((_, i) => {
       if (i === 0) return
       gsap.set(el.querySelectorAll(`[data-i="${i}"] .sc__linea > span`), { yPercent: 110 })
@@ -48,6 +61,7 @@ export default function Productos() {
     if (reducedMotion()) return
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 70%', once: true } })
+      entrada.current = tl
       tl.from('[data-i="0"] .sc__linea > span', { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: 0.08 })
         .from('.sc__img[data-i="0"]', { scale: 0.86, yPercent: 8, autoAlpha: 0, duration: 1.4, ease: 'expo.out' }, 0.15)
         .from('.sc__sombra', { scaleX: 0.4, autoAlpha: 0, duration: 1.2, ease: 'expo.out' }, 0.3)
@@ -81,6 +95,7 @@ export default function Productos() {
 
       if (reducedMotion()) {
         gsap.set(el, { '--fondo': p.fondo, '--tipo': p.tipo, '--ui': p.ui })
+        gsap.set(document.documentElement, { '--sc-fondo': p.fondo })
         gsap.set(sale('[data-i="$"] .sc__linea > span'), { yPercent: 110 })
         gsap.set(entra('[data-i="$"] .sc__linea > span'), { yPercent: 0 })
         gsap.set(sale('.sc__img[data-i="$"], .sc__info[data-i="$"]'), { autoAlpha: 0 })
@@ -88,6 +103,12 @@ export default function Productos() {
         return
       }
 
+      // Si la entrada de la sección aún no termina, se completa y se desactiva para que no reaparezca el primer producto
+      if (entrada.current) {
+        entrada.current.scrollTrigger?.kill()
+        entrada.current.progress(1)
+        entrada.current = null
+      }
       // Si se cambia rápido, se termina la transición anterior al instante
       animando.current?.progress(1)
       // Limpia estados intermedios de los productos que no participan
@@ -102,6 +123,7 @@ export default function Productos() {
         .timeline({ defaults: { ease: 'expo.inOut' } })
         // 1. Fondo y colores complementarios
         .to(el, { '--fondo': p.fondo, '--tipo': p.tipo, '--ui': p.ui, duration: 0.9, ease: 'power2.inOut' }, 0)
+        .to(document.documentElement, { '--sc-fondo': p.fondo, duration: 0.9, ease: 'power2.inOut' }, 0)
         // 2. Nombre gigante: sale hacia arriba, entra desde abajo
         .to(sale('[data-i="$"] .sc__linea > span'), { yPercent: -110, duration: 0.6, stagger: 0.05, ease: 'expo.in' }, 0)
         .fromTo(entra('[data-i="$"] .sc__linea > span'), { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.07, ease: 'expo.out' }, 0.45)
@@ -144,7 +166,7 @@ export default function Productos() {
         <div className="sc__arte">
         <div className="sc__nombres" aria-hidden="true">
           {showcase.map((p, i) => (
-            <p key={p.id} data-i={i} className={`sc__nombre display ${p.titulo.length > 1 ? 'sc__nombre--2' : ''}`}>
+            <p key={p.id} data-i={i} className="sc__nombre display" style={tamanoNombre(p.titulo)}>
               {p.titulo.map((l) => (
                 <span className="sc__linea" key={l}><span>{l}</span></span>
               ))}

@@ -4,15 +4,14 @@
   --tipo: #002753;
   --ui: #002753;
   position: relative;
-  background: var(--sal);
-  padding: clamp(8px, 1vw, 14px);
+  background: var(--fondo);
+  margin-top: -1px; /* evita la línea de unión con las montañas del hero */
 }
 
 /* Escenario casi a todo el ancho, con el color del producto activo */
 .sc__escena {
   position: relative;
   height: clamp(680px, 92svh, 860px);
-  border-radius: var(--radio);
   background: var(--fondo);
   color: var(--ui);
   overflow: hidden;
@@ -27,23 +26,23 @@
   display: grid;
   justify-items: center;
   color: var(--tipo);
-  font-size: min(29vw, 48svh);
-  line-height: 0.84;
-  letter-spacing: 0.005em;
+  /* tamaño calculado por producto (según la palabra más larga) para ocupar el ancho sin desbordar */
+  font-size: var(--sc-tam, min(29vw, 48svh));
+  line-height: 0.86;
+  letter-spacing: 0.06em; /* más aire entre letras: se lee mejor detrás del empaque */
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
 }
-.sc__nombre--2 { font-size: min(19.5vw, 30svh); }
 .sc__linea { display: block; overflow: hidden; padding: 0.06em 0.04em 0; margin-top: -0.06em; }
-.sc__linea > span { display: block; will-change: transform; }
+.sc__linea > span { display: block; padding-left: 0.06em; /* compensa el espaciado final para centrar */ will-change: transform; }
 
 /* Producto protagonista, superpuesto a la tipografía */
 .sc__producto {
   position: absolute;
   left: 50%;
-  top: 44%;
-  width: min(44vw, 620px);
+  top: 45%;
+  width: min(54vw, 800px, 82svh);
   aspect-ratio: 620 / 580;
   transform: translate(-50%, -50%);
   z-index: 2;
@@ -121,7 +120,7 @@
 @media (max-width: 1080px) {
   .sc__escena { height: clamp(700px, 86svh, 820px); }
   .sc__nombres { bottom: 230px; }
-  .sc__producto { width: min(62vw, 520px); top: 38%; }
+  .sc__producto { width: min(74vw, 620px); top: 38%; }
   .sc__pie { grid-template-columns: 1fr auto; grid-template-areas: 'sel sel' 'info ver'; row-gap: 26px; }
   .sc__selector { grid-area: sel; }
   .sc__infos { grid-area: info; }
@@ -130,13 +129,11 @@
 
 /* ---------- Móvil: composición vertical propia ---------- */
 @media (max-width: 767px) {
-  .sc { padding: 8px; }
   .sc__escena { height: auto; display: flex; flex-direction: column; }
   .sc__arte { position: relative; inset: auto; aspect-ratio: 1 / 1.02; }
   .sc__nombres { inset: 0; align-items: start; padding-top: 12%; }
-  .sc__nombre { font-size: 30vw; }
-  .sc__nombre--2 { font-size: 21vw; }
-  .sc__producto { width: 86%; top: 60%; }
+  .sc__nombre { font-size: var(--sc-tam-m, 30vw); }
+  .sc__producto { width: 96%; top: 60%; }
 
   .sc__pie { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 22px; padding: 0 20px 26px; }
   /* El selector se desplaza en horizontal si no caben las opciones */
