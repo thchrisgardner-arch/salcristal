@@ -16,7 +16,7 @@ export default function Footer() {
           </p>
           <p className="footer__bajada">Sal marina de Uribia, La Guajira, para tu mesa y para tu industria.</p>
           <div className="footer__ctas">
-            <Enlace to="/contacto" className="btn btn--sol">Solicitar información <Flecha /></Enlace>
+            <Enlace to="/contacto" className="btn btn--claro">Solicitar información <Flecha /></Enlace>
             <Enlace to="/productos" className="btn btn--borde">Ver productos</Enlace>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap, reducedMotion } from '../lib/motion'
-import { Enlace } from '../lib/transicion'
-import { Flecha } from '../components/Graficos'
+import { useIr } from '../lib/transicion'
 import { showcase } from '../data'
 import './Productos.css'
 
@@ -28,6 +27,38 @@ export default function Productos() {
   const ref = useRef(null)
   const tabsRef = useRef([])
   const indicador = useRef(null)
+  const productoRef = useRef(null)
+  const descubre = useRef(null)
+  const ir = useIr()
+
+  // Círculo «Descubre»: sigue al cursor sobre el empaque y aparece/desaparece con escala
+  useEffect(() => {
+    const zona = productoRef.current
+    const b = descubre.current
+    if (!zona || !b || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return
+    const xTo = gsap.quickTo(b, 'x', { duration: 0.45, ease: 'power3' })
+    const yTo = gsap.quickTo(b, 'y', { duration: 0.45, ease: 'power3' })
+    const mover = (e) => {
+      const r = zona.getBoundingClientRect()
+      xTo(e.clientX - r.left)
+      yTo(e.clientY - r.top)
+    }
+    const entrar = (e) => {
+      const r = zona.getBoundingClientRect()
+      gsap.set(b, { x: e.clientX - r.left, y: e.clientY - r.top })
+      gsap.to(b, { scale: 1, autoAlpha: 1, duration: 0.45, ease: 'back.out(1.6)' })
+    }
+    const salir = () => gsap.to(b, { scale: 0.3, autoAlpha: 0, duration: 0.3, ease: 'power2.in' })
+    gsap.set(b, { scale: 0.3, autoAlpha: 0, xPercent: -50, yPercent: -50 })
+    zona.addEventListener('pointermove', mover)
+    zona.addEventListener('pointerenter', entrar)
+    zona.addEventListener('pointerleave', salir)
+    return () => {
+      zona.removeEventListener('pointermove', mover)
+      zona.removeEventListener('pointerenter', entrar)
+      zona.removeEventListener('pointerleave', salir)
+    }
+  }, [])
 
   // Mueve la línea inferior bajo el botón activo
   const moverIndicador = useCallback((i, inmediato = false) => {
@@ -53,7 +84,7 @@ export default function Productos() {
     showcase.forEach((_, i) => {
       if (i === 0) return
       gsap.set(el.querySelectorAll(`[data-i="${i}"] .sc__linea > span`), { yPercent: 110 })
-      gsap.set(el.querySelectorAll(`.sc__img[data-i="${i}"], .sc__info[data-i="${i}"]`), { autoAlpha: 0 })
+      gsap.set(el.querySelectorAll(`.sc__img[data-i="${i}"]`), { autoAlpha: 0 })
     })
     moverIndicador(0, true)
 
@@ -68,7 +99,6 @@ export default function Productos() {
         // fromTo + clearProps: los botones tienen transición CSS de opacidad y no se debe leer su valor a medio camino
         .fromTo('.sc__tab', { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.06, ease: 'power3.out', clearProps: 'opacity,visibility,transform' }, 0.45)
         .fromTo('.sc__indicador', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6 }, 0.8)
-        .from('.sc__info[data-i="0"] > *, .sc__ver', { autoAlpha: 0, y: 16, duration: 0.8, stagger: 0.06, ease: 'power3.out' }, 0.55)
     }, el)
     return () => ctx.revert()
   }, [moverIndicador])
@@ -98,8 +128,8 @@ export default function Productos() {
         gsap.set(document.documentElement, { '--sc-fondo': p.fondo })
         gsap.set(sale('[data-i="$"] .sc__linea > span'), { yPercent: 110 })
         gsap.set(entra('[data-i="$"] .sc__linea > span'), { yPercent: 0 })
-        gsap.set(sale('.sc__img[data-i="$"], .sc__info[data-i="$"]'), { autoAlpha: 0 })
-        gsap.set(entra('.sc__img[data-i="$"], .sc__info[data-i="$"]'), { autoAlpha: 1 })
+        gsap.set(sale('.sc__img[data-i="$"]'), { autoAlpha: 0 })
+        gsap.set(entra('.sc__img[data-i="$"]'), { autoAlpha: 1 })
         return
       }
 
@@ -115,7 +145,7 @@ export default function Productos() {
       showcase.forEach((_, k) => {
         if (k === i || k === de) return
         gsap.set(el.querySelectorAll(`[data-i="${k}"] .sc__linea > span`), { yPercent: 110 })
-        gsap.set(el.querySelectorAll(`.sc__img[data-i="${k}"], .sc__info[data-i="${k}"]`), { autoAlpha: 0 })
+        gsap.set(el.querySelectorAll(`.sc__img[data-i="${k}"]`), { autoAlpha: 0 })
       })
 
       const dir = i > de ? 1 : -1
@@ -137,9 +167,6 @@ export default function Productos() {
           0.5,
         )
         .fromTo('.sc__sombra', { scaleX: 1 }, { scaleX: 0.55, duration: 0.5, ease: 'power2.in', yoyo: true, repeat: 1 }, 0.1)
-        // 6. Información del producto
-        .to(sale('.sc__info[data-i="$"]'), { autoAlpha: 0, y: -12, duration: 0.35, ease: 'power2.in' }, 0)
-        .fromTo(entra('.sc__info[data-i="$"]'), { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.6)
     },
     [moverIndicador],
   )
@@ -163,7 +190,7 @@ export default function Productos() {
       <h2 id="sc-titulo" className="sr-only">Nuestros productos</h2>
 
       <div className="sc__escena">
-        <div className="sc__arte">
+        <div className="sc__arte" id="sc-panel" role="tabpanel" aria-labelledby={`sc-tab-${showcase[activo].id}`}>
         <div className="sc__nombres" aria-hidden="true">
           {showcase.map((p, i) => (
             <p key={p.id} data-i={i} className="sc__nombre display" style={tamanoNombre(p.titulo)}>
@@ -174,8 +201,19 @@ export default function Productos() {
           ))}
         </div>
 
-        <div className="sc__producto">
+        <a
+          className="sc__producto"
+          ref={productoRef}
+          href={showcase[activo].href}
+          aria-label={`Descubrir ${showcase[activo].nombre}`}
+          onClick={(e) => {
+            if (e.metaKey || e.ctrlKey) return
+            e.preventDefault()
+            ir(showcase[activo].href)
+          }}
+        >
           <span className="sc__sombra" aria-hidden="true" />
+          <span className="sc__descubre display" ref={descubre} aria-hidden="true">Descubre</span>
           {showcase.map((p, i) => (
             <img
               key={p.id}
@@ -189,29 +227,10 @@ export default function Productos() {
               decoding="async"
             />
           ))}
-        </div>
+        </a>
       </div>
 
       <div className="sc__pie">
-        <div className="sc__infos" id="sc-panel" role="tabpanel" aria-labelledby={`sc-tab-${showcase[activo].id}`}>
-          {showcase.map((p, i) => (
-            <div key={p.id} data-i={i} className="sc__info" aria-hidden={i !== activo}>
-              <span className="sc__cat">{p.categoria}</span>
-              <p className="sc__desc">{p.descripcion}</p>
-              {p.presentaciones ? (
-                <ul className="sc__pres" aria-label="Presentaciones">
-                  {p.presentaciones.map((x) => <li key={x}>{x}</li>)}
-                </ul>
-              ) : (
-                <p className="sc__nota">Ficha técnica bajo solicitud</p>
-              )}
-              <Enlace to={p.href} className="sc__cta" tabIndex={i === activo ? 0 : -1}>
-                Ver producto <Flecha />
-              </Enlace>
-            </div>
-          ))}
-        </div>
-
         <div className="sc__selector">
           <div className="sc__tabs" role="tablist" aria-label="Seleccionar producto" onKeyDown={onKey}>
             {showcase.map((p, i) => (
@@ -233,7 +252,6 @@ export default function Productos() {
           </div>
         </div>
 
-        <Enlace to="/productos" className="sc__ver">Ver todos los productos <Flecha /></Enlace>
       </div>
       </div>
     </section>

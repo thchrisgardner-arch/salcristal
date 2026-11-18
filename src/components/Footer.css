@@ -14,8 +14,8 @@
   color: var(--blanco);
 }
 .footer__titulo { font-size: clamp(54px, 7.2vw, 128px); line-height: 0.88; }
-.footer__titulo { color: var(--sol); }
-.footer__ctas .btn--borde { color: var(--sol); --hover: rgba(242, 194, 48, 0.14); }
+.footer__titulo { color: var(--blanco); }
+.footer__ctas .btn--borde { color: var(--blanco); }
 .footer__bajada { max-width: 40ch; font-size: clamp(16px, 1.3vw, 19px); color: rgba(255, 255, 255, 0.78); }
 .footer__ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 6px; }
 /* Móvil: la ilustración es angosta, el mensaje pasa a flujo normal con la ilustración detrás */
